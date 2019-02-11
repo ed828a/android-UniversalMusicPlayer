@@ -212,13 +212,13 @@ public class MusicProviderTest {
         // test level 3 (list of music for a given genre)
         List<MediaBrowserCompat.MediaItem> level3 = provider.getChildren(
                 level2.get(0).getMediaId(), resources);
-        String genre = MediaIDHelper.extractBrowseCategoryValueFromMediaID(
+        String genre = MediaIDHelper.INSTANCE.extractBrowseCategoryValueFromMediaID(
                 level2.get(0).getMediaId());
         for (MediaBrowserCompat.MediaItem mediaItem: level3) {
             assertTrue(mediaItem.isPlayable());
             assertFalse(mediaItem.isBrowsable());
             MediaMetadataCompat metadata = provider.getMusic(
-                    MediaIDHelper.extractMusicIDFromMediaID(mediaItem.getMediaId()));
+                    MediaIDHelper.INSTANCE.extractMusicIDFromMediaID(mediaItem.getMediaId()));
             assertEquals(genre, metadata.getString(MediaMetadataCompat.METADATA_KEY_GENRE));
         }
 

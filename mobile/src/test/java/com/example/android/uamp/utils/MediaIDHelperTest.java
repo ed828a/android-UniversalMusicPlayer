@@ -33,70 +33,70 @@ public class MediaIDHelperTest {
 
     @Test
     public void testNormalMediaIDStructure() throws Exception {
-        String mediaID = MediaIDHelper.createMediaID("784343", "BY_GENRE", "Classic 70's");
-        assertEquals("Classic 70's", MediaIDHelper.extractBrowseCategoryValueFromMediaID(mediaID));
-        assertEquals("784343", MediaIDHelper.extractMusicIDFromMediaID(mediaID));
+        String mediaID = MediaIDHelper.INSTANCE.createMediaID("784343", "BY_GENRE", "Classic 70's");
+        assertEquals("Classic 70's", MediaIDHelper.INSTANCE.extractBrowseCategoryValueFromMediaID(mediaID));
+        assertEquals("784343", MediaIDHelper.INSTANCE.extractMusicIDFromMediaID(mediaID));
     }
 
     @Test
     public void testSpecialSymbolsMediaIDStructure() throws Exception {
-        String mediaID = MediaIDHelper.createMediaID("78A_88|X/3", "BY_GENRE", "Classic 70's");
-        assertEquals("Classic 70's", MediaIDHelper.extractBrowseCategoryValueFromMediaID(mediaID));
-        assertEquals("78A_88|X/3", MediaIDHelper.extractMusicIDFromMediaID(mediaID));
+        String mediaID = MediaIDHelper.INSTANCE.createMediaID("78A_88|X/3", "BY_GENRE", "Classic 70's");
+        assertEquals("Classic 70's", MediaIDHelper.INSTANCE.extractBrowseCategoryValueFromMediaID(mediaID));
+        assertEquals("78A_88|X/3", MediaIDHelper.INSTANCE.extractMusicIDFromMediaID(mediaID));
     }
 
     @Test
     public void testNullMediaIDStructure() throws Exception {
-        String mediaID = MediaIDHelper.createMediaID(null, "BY_GENRE", "Classic 70's");
-        assertEquals("Classic 70's", MediaIDHelper.extractBrowseCategoryValueFromMediaID(mediaID));
-        assertNull(MediaIDHelper.extractMusicIDFromMediaID(mediaID));
+        String mediaID = MediaIDHelper.INSTANCE.createMediaID(null, "BY_GENRE", "Classic 70's");
+        assertEquals("Classic 70's", MediaIDHelper.INSTANCE.extractBrowseCategoryValueFromMediaID(mediaID));
+        assertNull(MediaIDHelper.INSTANCE.extractMusicIDFromMediaID(mediaID));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidSymbolsInMediaIDStructure() throws Exception {
-        fail(MediaIDHelper.createMediaID(null, "BY|GENRE/2", "Classic 70's"));
+        fail(MediaIDHelper.INSTANCE.createMediaID(null, "BY|GENRE/2", "Classic 70's"));
     }
 
     @Test
     public void testCreateBrowseCategoryMediaID() throws Exception {
-        String browseMediaID = MediaIDHelper.createMediaID(null, "BY_GENRE", "Rock & Roll");
-        assertEquals("Rock & Roll", MediaIDHelper.extractBrowseCategoryValueFromMediaID(browseMediaID));
-        String[] categories = MediaIDHelper.getHierarchy(browseMediaID);
+        String browseMediaID = MediaIDHelper.INSTANCE.createMediaID(null, "BY_GENRE", "Rock & Roll");
+        assertEquals("Rock & Roll", MediaIDHelper.INSTANCE.extractBrowseCategoryValueFromMediaID(browseMediaID));
+        String[] categories = MediaIDHelper.INSTANCE.getHierarchy(browseMediaID);
         assertArrayEquals(categories, new String[]{"BY_GENRE", "Rock & Roll"});
     }
 
     @Test
     public void testGetParentOfPlayableMediaID() throws Exception {
-        String mediaID = MediaIDHelper.createMediaID("23423423", "BY_GENRE", "Rock & Roll");
-        String expectedParentID = MediaIDHelper.createMediaID(null, "BY_GENRE", "Rock & Roll");
-        assertEquals(expectedParentID, MediaIDHelper.getParentMediaID(mediaID));
+        String mediaID = MediaIDHelper.INSTANCE.createMediaID("23423423", "BY_GENRE", "Rock & Roll");
+        String expectedParentID = MediaIDHelper.INSTANCE.createMediaID(null, "BY_GENRE", "Rock & Roll");
+        assertEquals(expectedParentID, MediaIDHelper.INSTANCE.getParentMediaID(mediaID));
     }
 
     @Test
     public void testGetParentOfBrowsableMediaID() throws Exception {
-        String mediaID = MediaIDHelper.createMediaID(null, "BY_GENRE", "Rock & Roll");
-        String expectedParentID = MediaIDHelper.createMediaID(null, "BY_GENRE");
-        assertEquals(expectedParentID, MediaIDHelper.getParentMediaID(mediaID));
+        String mediaID = MediaIDHelper.INSTANCE.createMediaID(null, "BY_GENRE", "Rock & Roll");
+        String expectedParentID = MediaIDHelper.INSTANCE.createMediaID(null, "BY_GENRE");
+        assertEquals(expectedParentID, MediaIDHelper.INSTANCE.getParentMediaID(mediaID));
     }
 
     @Test
     public void testGetParentOfCategoryMediaID() throws Exception {
         assertEquals(
                 MediaIDHelper.MEDIA_ID_ROOT,
-                MediaIDHelper.getParentMediaID(MediaIDHelper.createMediaID(null, "BY_GENRE")));
+                MediaIDHelper.INSTANCE.getParentMediaID(MediaIDHelper.INSTANCE.createMediaID(null, "BY_GENRE")));
     }
 
     @Test
     public void testGetParentOfRoot() throws Exception {
         assertEquals(
                 MediaIDHelper.MEDIA_ID_ROOT,
-                MediaIDHelper.getParentMediaID(MediaIDHelper.MEDIA_ID_ROOT));
+                MediaIDHelper.INSTANCE.getParentMediaID(MediaIDHelper.MEDIA_ID_ROOT));
     }
 
     @Test(expected=NullPointerException.class)
     public void testGetParentOfNull() throws Exception {
         //noinspection ConstantConditions
-        fail(MediaIDHelper.getParentMediaID(null));
+        fail(MediaIDHelper.INSTANCE.getParentMediaID(null));
     }
 
 }

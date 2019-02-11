@@ -117,11 +117,11 @@ public class QueueManagerTest {
         Iterator<String> genres = provider.getGenres().iterator();
         String genre1 = genres.next();
         String genre2 = genres.next();
-        List<MediaSessionCompat.QueueItem> queueGenre1 = QueueHelper.getPlayingQueue(
-                MediaIDHelper.createMediaID(null, MediaIDHelper.MEDIA_ID_MUSICS_BY_GENRE, genre1),
+        List<MediaSessionCompat.QueueItem> queueGenre1 = QueueHelper.INSTANCE.getPlayingQueue(
+                MediaIDHelper.INSTANCE.createMediaID(null, MediaIDHelper.MEDIA_ID_MUSICS_BY_GENRE, genre1),
                 provider);
-        List<MediaSessionCompat.QueueItem> queueGenre2 = QueueHelper.getPlayingQueue(
-                MediaIDHelper.createMediaID(null, MediaIDHelper.MEDIA_ID_MUSICS_BY_GENRE, genre2),
+        List<MediaSessionCompat.QueueItem> queueGenre2 = QueueHelper.INSTANCE.getPlayingQueue(
+                MediaIDHelper.INSTANCE.createMediaID(null, MediaIDHelper.MEDIA_ID_MUSICS_BY_GENRE, genre2),
                 provider);
 
         // set the current queue
@@ -137,7 +137,7 @@ public class QueueManagerTest {
     @Test
     public void testSetValidQueueItem() throws Exception {
         // Get a queue that contains songs with space on their title (all in our test dataset)
-        List<MediaSessionCompat.QueueItem> queue = QueueHelper.getPlayingQueueFromSearch(
+        List<MediaSessionCompat.QueueItem> queue = QueueHelper.INSTANCE.getPlayingQueueFromSearch(
                 " ", null, provider);
 
         int expectedItemIndex = queue.size() - 1;
@@ -162,7 +162,7 @@ public class QueueManagerTest {
     @Test
     public void testSetInvalidQueueItem() throws Exception {
         // Get a queue that contains songs with space on their title (all in our test dataset)
-        List<MediaSessionCompat.QueueItem> queue = QueueHelper.getPlayingQueueFromSearch(
+        List<MediaSessionCompat.QueueItem> queue = QueueHelper.INSTANCE.getPlayingQueueFromSearch(
                 " ", null, provider);
 
         int expectedItemIndex = queue.size() - 1;
@@ -193,7 +193,7 @@ public class QueueManagerTest {
     @Test
     public void testSkip() throws Exception {
         // Get a queue that contains songs with space on their title (all in our test dataset)
-        List<MediaSessionCompat.QueueItem> queue = QueueHelper.getPlayingQueueFromSearch(
+        List<MediaSessionCompat.QueueItem> queue = QueueHelper.INSTANCE.getPlayingQueueFromSearch(
                 " ", null, provider);
         assertTrue(queue.size() > 3);
 
@@ -250,7 +250,7 @@ public class QueueManagerTest {
         // mediaId
         String genre = provider.getGenres().iterator().next();
         MediaMetadataCompat metadata = provider.getMusicsByGenre(genre).iterator().next();
-        String hierarchyAwareMediaID = MediaIDHelper.createMediaID(
+        String hierarchyAwareMediaID = MediaIDHelper.INSTANCE.createMediaID(
                 metadata.getDescription().getMediaId(), MediaIDHelper.MEDIA_ID_MUSICS_BY_GENRE,
                 genre);
 
@@ -270,7 +270,7 @@ public class QueueManagerTest {
         // Now check if all songs in current queue have the expected genre:
         for (int i=0; i < queueManager.getCurrentQueueSize(); i++) {
             MediaSessionCompat.QueueItem item = queueManager.getCurrentMusic();
-            String musicId = MediaIDHelper.extractMusicIDFromMediaID(
+            String musicId = MediaIDHelper.INSTANCE.extractMusicIDFromMediaID(
                     item.getDescription().getMediaId());
             String itemGenre = provider.getMusic(musicId).getString(
                     MediaMetadataCompat.METADATA_KEY_GENRE);

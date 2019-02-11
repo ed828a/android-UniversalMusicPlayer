@@ -82,7 +82,7 @@ public class PlaybackManagerTest {
     @Test
     public void testPlay() throws Exception {
         String mediaId = MediaIDHelper.MEDIA_ID_ROOT;
-        while (MediaIDHelper.isBrowseable(mediaId)) {
+        while (MediaIDHelper.INSTANCE.isBrowseable(mediaId)) {
             mediaId = musicProvider.getChildren(mediaId, resources).get(0).getMediaId();
         }
 
@@ -95,7 +95,7 @@ public class PlaybackManagerTest {
             @Override
             public void onMetadataChanged(MediaMetadataCompat metadata) {
                 // Latch countdown 1: QueueManager will change appropriately
-                assertEquals(MediaIDHelper.extractMusicIDFromMediaID(expectedMediaId),
+                assertEquals(MediaIDHelper.INSTANCE.extractMusicIDFromMediaID(expectedMediaId),
                         metadata.getDescription().getMediaId());
                 latch.countDown();
             }
@@ -188,7 +188,7 @@ public class PlaybackManagerTest {
             @Override
             public void play(MediaSessionCompat.QueueItem item) {
                 // Latch countdown 5: Playback will be called with the correct queueItem
-                assertEquals(expectedMusicId, MediaIDHelper.extractMusicIDFromMediaID(
+                assertEquals(expectedMusicId, MediaIDHelper.INSTANCE.extractMusicIDFromMediaID(
                         item.getDescription().getMediaId()));
                 latch.countDown();
             }
@@ -201,7 +201,7 @@ public class PlaybackManagerTest {
         latch.await(5, TimeUnit.SECONDS);
 
         // Finally, check if the current music in queueManager is as expected
-        assertEquals(expectedMusicId,  MediaIDHelper.extractMusicIDFromMediaID(
+        assertEquals(expectedMusicId,  MediaIDHelper.INSTANCE.extractMusicIDFromMediaID(
                 queueManager.getCurrentMusic().getDescription().getMediaId()));
     }
 
